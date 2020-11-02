@@ -4,10 +4,10 @@
 #
 Name     : msgpack-c
 Version  : 3.2.0
-Release  : 2
+Release  : 3
 URL      : https://github.com/msgpack/msgpack-c/archive/cpp-3.2.0.tar.gz
 Source0  : https://github.com/msgpack/msgpack-c/archive/cpp-3.2.0.tar.gz
-Summary  : An efficient object serialization library
+Summary  : Binary-based efficient object serialization library
 Group    : Development/Tools
 License  : BSL-1.0
 Requires: msgpack-c-lib = %{version}-%{release}
@@ -51,29 +51,30 @@ license components for the msgpack-c package.
 
 %prep
 %setup -q -n msgpack-c-cpp-3.2.0
+cd %{_builddir}/msgpack-c-cpp-3.2.0
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564439885
+export SOURCE_DATE_EPOCH=1604359911
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$CFLAGS -fno-lto "
-export FFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
 %cmake ..
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1564439885
+export SOURCE_DATE_EPOCH=1604359911
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/msgpack-c
-cp LICENSE_1_0.txt %{buildroot}/usr/share/package-licenses/msgpack-c/LICENSE_1_0.txt
+cp %{_builddir}/msgpack-c-cpp-3.2.0/LICENSE_1_0.txt %{buildroot}/usr/share/package-licenses/msgpack-c/3cba29011be2b9d59f6204d6fa0a386b1b2dbd90
 pushd clr-build
 %make_install
 popd
@@ -83,8 +84,8 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
-/usr/include/*.hpp
+/usr/include/msgpack.h
+/usr/include/msgpack.hpp
 /usr/include/msgpack/adaptor/adaptor_base.hpp
 /usr/include/msgpack/adaptor/adaptor_base_decl.hpp
 /usr/include/msgpack/adaptor/array_ref.hpp
@@ -836,4 +837,4 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/msgpack-c/LICENSE_1_0.txt
+/usr/share/package-licenses/msgpack-c/3cba29011be2b9d59f6204d6fa0a386b1b2dbd90
